@@ -44,5 +44,5 @@ function createComment(){
   };
 }
 
-const photosDiscription = Array.from({length: COUNT_PHOTO}, createPhotoDiscription());
+Array.from({length: COUNT_PHOTO}, createPhotoDiscription());
 
