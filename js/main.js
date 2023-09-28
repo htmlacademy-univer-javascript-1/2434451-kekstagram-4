@@ -45,5 +45,4 @@ function createComment(){
 }
 
 const photosDiscription = Array.from({length: COUNT_PHOTO}, createPhotoDiscription());
-console.log(photosDiscription);
 
