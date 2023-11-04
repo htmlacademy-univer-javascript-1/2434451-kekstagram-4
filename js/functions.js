@@ -50,3 +50,4 @@ ExtractNumbers('fds12321'); // 12321
 ExtractNumbers('gkasd'); // NaN
 ExtractNumbers('1'); // 1
 ExtractNumbers(1231); // 1231
+
