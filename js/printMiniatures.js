@@ -6,7 +6,7 @@ const printPhoto = function(photoInfo){
   const photoImage = newPhoto.querySelector('.picture__img');
   photoImage.src = photoInfo.url;
   photoImage.alt = photoInfo.description;
-
+  photoImage.id = photoInfo.id;
   const aboutPhoto = newPhoto.querySelector('.picture__info');
 
   const photoLikes = newPhoto.querySelector('.picture__likes');
