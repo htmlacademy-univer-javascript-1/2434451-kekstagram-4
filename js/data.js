@@ -1,5 +1,8 @@
 import { getRandomInteger } from './util.js';
 import { MESSAGES, AUTHORS } from './consts.js';
+import { COUNT_PHOTO } from './consts.js';
+import { printPhoto } from './printMiniatures.js';
+import { printBigPhoto } from './printImage.js';
 
 function createPhotoDiscription(){ //Создание объекта описания фотографии
   let photoID = 0;
@@ -28,4 +31,12 @@ function createComment(){
   };
 }
 
-export {createComment, createPhotoDiscription};
+const photosDiscriptions = Array.from({length: COUNT_PHOTO}, createPhotoDiscription());
+
+photosDiscriptions.forEach((item) => {
+  printPhoto(item);
+});
+const photos = document.querySelector('.pictures');
+photos.addEventListener('click', printBigPhoto);
+
+export {createComment, createPhotoDiscription, photosDiscriptions, photos};
