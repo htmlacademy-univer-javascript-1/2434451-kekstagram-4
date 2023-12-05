@@ -9,4 +9,7 @@ const MESSAGES = [
 ]; //Как-то много негативных комментариев :(
 const AUTHORS = ['Миша', 'Главный Хейтер', 'Младший хейтер', 'Дарья Магомедова', 'Маша', 'Данил'];
 
-export {COUNT_PHOTO, MESSAGES, AUTHORS};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {COUNT_PHOTO, MESSAGES, AUTHORS, isEscapeKey, isEnterKey};
