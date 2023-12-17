@@ -1,19 +1,23 @@
-const uploadForm = document.querySelector('.img-upload__form');
+import { sendData } from './api.js';
+import { closeSentFormError } from './showFileForm.js';
+import { regexp } from './consts.js';
 
-const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
+const imageForm = document.querySelector('.img-upload__form');
+const submitButton = imageForm.querySelector('.img-upload__submit');
 
-const pristine = new Pristine(uploadForm, {
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
+
+const pristine = new Pristine(imageForm, {
   classTo: 'form__item',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
   errorTextParent: 'form__item',
   errorTextTag: 'span',
   errorTextClass: 'form__error'
-}, false);
-
-function validateDescription (value) {
-  return value.length <= 140;
-}
+});
 
 
 function validateHashtags(value) {
@@ -40,7 +44,7 @@ function validateHashtags(value) {
 }
 
 function dropError(){
-  const hashtags = uploadForm.querySelector('.text__hashtags');
+  const hashtags = imageForm.querySelector('.text__hashtags');
   const hashtagsArr = hashtags.value.split(' ');
   if (hashtagsArr.length > 5){
     return 'Максимальное возможное количество тэгов: 5';
@@ -59,18 +63,44 @@ function dropError(){
   return message;
 }
 
+function validateComment(value) {
+  return value.length <= 140;
+}
 
-pristine.addValidator(uploadForm.querySelector('.text__hashtags'), validateHashtags, dropError);
-pristine.addValidator(uploadForm.querySelector('.text__description'),
-  validateDescription,
-  'Комментарий к изображению не может быть длиннее 140 символов.');
+pristine.addValidator(imageForm.querySelector('.text__hashtags'), validateHashtags, dropError);
 
+pristine.addValidator( imageForm.querySelector('.text__description'), validateComment,
+  'Комментарий к изображению не может быть длиннее 140 символов.'
+);
 
-uploadForm.addEventListener('submit', (evt) => {
-  if (pristine.validate()) {
-    return true;
-  }
-  else {
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  imageForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      pristine.reset();
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch(
+          (err) => {
+            closeSentFormError(err.message);
+          }
+        )
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+
+export {setUserFormSubmit};
