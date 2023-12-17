@@ -6,7 +6,7 @@ const imageForm = document.querySelector('.img-upload__form');
 const submitButton = imageForm.querySelector('.img-upload__submit');
 
 const SubmitButtonText = {
-  IDLE: 'Сохранить',
+  IDLE: 'Сохранить.',
   SENDING: 'Сохраняю...'
 };
 
