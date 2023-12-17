@@ -1,19 +1,15 @@
 import { isEscapeKey, isEnterKey } from './consts.js';
 import { preview } from './consts.js';
 
-const overlay = document.querySelector('.img-upload__overlay');
+const formOverlay = document.querySelector('.img-upload__overlay');
 const uploadFile = document.querySelector('#upload-file');
 const closeForm = document.querySelector('.img-upload__cancel');
-const fileInput = document.querySelector('.img-upload__input');
 const imageForm = document.querySelector('.img-upload__form');
-const hashTag = imageForm.querySelector('.text__hashtags');
-const comment = imageForm.querySelector('.text__description');
-const effectsPreview = imageForm.querySelectorAll('.effects__preview');
+
 const scaleSmaller = imageForm.querySelector('.scale__control--smaller');
 const scaleBigger = imageForm.querySelector('.scale__control--bigger');
 const scaleValue = imageForm.querySelector('.scale__control--value');
 const successMessageTemplate = document.querySelector('#success');
-const errorMessageTemplate = document.querySelector('#error');
 
 
 const onDocumentKeydown = (evt) => {
@@ -39,8 +35,8 @@ const minusScale = (evt) => {
 
 function openFileForm() {
   const urlImg = URL.createObjectURL(uploadFile.files[0]);
-  overlay.classList.remove('hidden');
-  effectsPreview.forEach((element) => {
+  formOverlay.classList.remove('hidden');
+  imageForm.querySelectorAll('.effects__preview').forEach((element) => {
     element.style.backgroundImage = `url(${  urlImg  })`;
   });
   preview.setAttribute('src', urlImg);
@@ -55,9 +51,10 @@ function scaleImage(value) {
 }
 
 function closeFileForm() {
-  if (!(document.activeElement === hashTag || document.activeElement === comment)) {
+  if (!(document.activeElement === imageForm.querySelector('.text__hashtags')
+  || document.activeElement === imageForm.querySelector('.text__description'))) {
     uploadFile.value = '';
-    overlay.classList.add('hidden');
+    formOverlay.classList.add('hidden');
     document.removeEventListener('keydown', onDocumentKeydown);
     document.body.classList.remove('modal-open');
     scaleBigger.removeEventListener('click', plusScale);
@@ -77,7 +74,7 @@ closeForm.addEventListener('keydown', (evt) => {
   }
 });
 
-fileInput.addEventListener('change', (evt) => {
+document.querySelector('.img-upload__input').addEventListener('change', (evt) => {
   evt.preventDefault();
   openFileForm();
 });
@@ -95,7 +92,7 @@ const onDocumentKeydownError = (evt) => {
     evt.preventDefault();
     document.removeEventListener('keydown', onDocumentKeydownError);
     document.body.removeChild(document.body.querySelector('.error'));
-    overlay.classList.remove('hidden');
+    formOverlay.classList.remove('hidden');
   }
 };
 
@@ -113,16 +110,17 @@ function closeSentForm() {
 }
 
 const closeSentFormError = (message) => {
-  overlay.classList.add('hidden');
-  const errorMessage = errorMessageTemplate.content.cloneNode(true);
+  formOverlay.classList.add('hidden');
+  const error = document.querySelector('#error');
+  const errorMessage = error.content.cloneNode(true);
   const errorText = errorMessage.querySelector('.error__title');
-  errorText.textContent = `${message  }\n`;
+  errorText.textContent = `${message}\n`;
   const errorButton = errorMessage.querySelector('.error__button');
   document.body.appendChild(errorMessage, true);
   errorButton.addEventListener('click', (evt) => {
     document.body.removeChild(document.body.querySelector('.error'));
     document.removeEventListener('keydown', onDocumentKeydownError);
-    overlay.classList.remove('hidden');
+    formOverlay.classList.remove('hidden');
     evt.preventDefault();
   });
   document.addEventListener('keydown', onDocumentKeydownError);

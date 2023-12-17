@@ -8,7 +8,7 @@ function getRandomInteger(min, max) {
   return Math.floor(result);
 }
 
-function createRandomIdFromRangeGenerator(min, max) {
+function createRandomRangeGenerator(min, max) {
   const previousValues = [];
 
   return function () {
@@ -55,4 +55,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {getRandomInteger, createRandomIdFromRangeGenerator, showAlert, debounce};
+export {getRandomInteger, createRandomRangeGenerator, showAlert, debounce};
