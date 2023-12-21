@@ -3,11 +3,8 @@ import { isEscapeKey, isEnterKey } from './consts.js';
 const overlay = document.querySelector('.img-upload__overlay');
 const uploadFile = document.querySelector('#upload-file');
 const closeForm = document.querySelector('.img-upload__cancel');
-const fileInput = document.querySelector('.img-upload__input');
 const imageForm = document.querySelector('.img-upload__form');
-const hashTag = imageForm.querySelector('.text__hashtags');
-const comment = imageForm.querySelector('.text__description');
-export const preview = imageForm.querySelector('.img-upload__preview img');
+const previewImage = imageForm.querySelector('.img-upload__preview img');
 const effectsPreview = imageForm.querySelectorAll('.effects__preview');
 const scaleSmaller = imageForm.querySelector('.scale__control--smaller');
 const scaleBigger = imageForm.querySelector('.scale__control--bigger');
@@ -17,7 +14,7 @@ const errorMessageTemplate = document.querySelector('#error');
 
 
 const scaleImage = (value) => {
-  preview.style.transform = `scale(${  Number(Number(value.slice(0, -1)) / 100)  })`;
+  previewImage.style.transform = `scale(${  Number(Number(value.slice(0, -1)) / 100)  })`;
 };
 
 const onScaleBiggerClick = (evt) => {
@@ -33,7 +30,8 @@ const onScaleSmallerClick = (evt) => {
 };
 
 const closeFileForm = (func=()=>(null)) => {
-  if (!(document.activeElement === hashTag || document.activeElement === comment)) {
+  if (!(document.activeElement === imageForm.querySelector('.text__hashtags')
+  || document.activeElement === imageForm.querySelector('.text__description'))) {
     uploadFile.value = '';
     overlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -58,11 +56,11 @@ const openFileForm = () => {
   effectsPreview.forEach((element) => {
     element.style.backgroundImage = `url(${  urlImg  })`;
   });
-  preview.setAttribute('src', urlImg);
+  previewImage.setAttribute('src', urlImg);
   document.addEventListener('keydown', onDocumentKeydown);
-  document.body.classList.add('modal-open');
   scaleBigger.addEventListener('click', onScaleBiggerClick);
   scaleSmaller.addEventListener('click', onScaleSmallerClick);
+  document.body.classList.add('modal-open');
 };
 
 closeForm.addEventListener('click', () => {
@@ -75,7 +73,7 @@ closeForm.addEventListener('keydown', (evt) => {
   }
 });
 
-fileInput.addEventListener('change', (evt) => {
+document.querySelector('.img-upload__input').addEventListener('change', (evt) => {
   evt.preventDefault();
   openFileForm();
 });
@@ -127,4 +125,4 @@ const closeSentFormError = (message) => {
 };
 
 
-export {closeSentForm, closeSentFormError};
+export {closeSentForm, closeSentFormError, previewImage};
