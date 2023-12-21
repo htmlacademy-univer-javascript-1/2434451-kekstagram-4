@@ -1,26 +1,36 @@
 import { isEscapeKey, isEnterKey } from './consts.js';
-import { picturesList } from './getImages.js';
-import { renderImage, renderComments } from './renderImage.js';
+import { renderImage, renderComments } from './rendering-image.js';
+import { filterDefault } from './image-filters.js';
 
-export const bigPictureImage = document.querySelector('.big-picture');
+const bigPictureImage = document.querySelector('.big-picture');
 const bigPictureCloseButton = document.querySelector('.big-picture__cancel');
 
 let onLoadComments;
 
+const closeImage = (func) => {
+  const commentsList = document.querySelector('.social__comments');
+  commentsList.innerHTML = '';
+  bigPictureImage.classList.add('hidden');
+  document.removeEventListener('keydown', func);
+  document.body.classList.remove('modal-open');
+  document.querySelector('.comments-loader').removeEventListener('click', onLoadComments);
+};
+
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+    document.removeEventListener('keydown', onDocumentKeydown);
     closeImage();
   }
 };
 
-function openImage(image, data) {
+const openImage = (image, data) => {
   if (image.target.classList.contains('picture__img')){
     image.preventDefault();
     const commentLoader = bigPictureImage.querySelector('.comments-loader');
     commentLoader.classList.remove('hidden');
     bigPictureImage.classList.remove('hidden');
-    const commentsObj = renderComments(data, image, 0, commentLoader);
+    const commentsObj = renderComments(filterDefault(data), image, 0, commentLoader);
     commentsObj();
     onLoadComments = (evt) => {
       evt.preventDefault();
@@ -31,18 +41,10 @@ function openImage(image, data) {
     document.addEventListener('keydown', onDocumentKeydown);
     document.body.classList.add('modal-open');
   }
-}
-
-function closeImage () {
-  const commentsList = document.querySelector('.social__comments');
-  commentsList.innerHTML = '';
-  bigPictureImage.classList.add('hidden');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  document.body.classList.remove('modal-open');
-  document.querySelector('.comments-loader').removeEventListener('click', onLoadComments);
-}
+};
 
 const setFullsizeListeners = (data) => {
+  const picturesList = document.querySelector('.pictures');
   picturesList.addEventListener('click', (evt) => {
     openImage(evt, data);
   });
@@ -53,14 +55,13 @@ const setFullsizeListeners = (data) => {
   });
 };
 
-
 bigPictureCloseButton.addEventListener('click', () => {
-  closeImage();
+  closeImage(onDocumentKeydown);
 });
 
 bigPictureCloseButton.addEventListener('keydown', (evt) => {
   if (isEnterKey(evt)) {
-    closeImage();
+    closeImage(onDocumentKeydown);
   }
 });
 
