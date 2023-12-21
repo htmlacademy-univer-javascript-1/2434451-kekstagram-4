@@ -1,14 +1,9 @@
 import { sendData } from './api.js';
-import { closeSentFormError } from './showFileForm.js';
-import { regexp } from './consts.js';
+import { closeSentFormError } from './file-form.js';
+import { REGEXP } from './consts.js';
 
 const imageForm = document.querySelector('.img-upload__form');
 const submitButton = imageForm.querySelector('.img-upload__submit');
-
-const SubmitButtonText = {
-  IDLE: 'Сохранить.',
-  SENDING: 'Сохраняю...'
-};
 
 const pristine = new Pristine(imageForm, {
   classTo: 'form__item',
@@ -32,7 +27,7 @@ function validateHashtags(value) {
     return false;
   }
   hashtagsArr.forEach((element) => {
-    if (!regexp.test(element) || repeatHashtags.includes(element)) {
+    if (!REGEXP.test(element) || repeatHashtags.includes(element)) {
       flag = false;
     }
     repeatHashtags.push(element);
@@ -52,26 +47,35 @@ function dropError(){
   let message = '';
   const repeatHashtags = [];
   hashtagsArr.forEach((element) => {
-    if (!regexp.test(element)){
-      message = 'Введён невалидный хэш-тег';
-    }
     if (repeatHashtags.includes(element)) {
       message = 'Хэш-теги повторяются';
+    }
+    else if (!REGEXP.test(element)){
+      message = 'Введён невалидный хэш-тег';
     }
     repeatHashtags.push(element);
   });
   return message;
 }
 
-function validateComment(value) {
-  return value.length <= 140;
-}
+const validateComment = (value) => value.length <= 140;
 
-pristine.addValidator(imageForm.querySelector('.text__hashtags'), validateHashtags, dropError);
+pristine.addValidator(
+  imageForm.querySelector('.text__hashtags'),
+  validateHashtags,
+  dropError()
+);
 
-pristine.addValidator( imageForm.querySelector('.text__description'), validateComment,
+pristine.addValidator(
+  imageForm.querySelector('.text__description'),
+  validateComment,
   'Комментарий к изображению не может быть длиннее 140 символов.'
 );
+
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -86,9 +90,7 @@ const unblockSubmitButton = () => {
 const setUserFormSubmit = (onSuccess) => {
   imageForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-
-    const isValid = pristine.validate();
-    if (isValid) {
+    if (pristine.validate()) {
       pristine.reset();
       blockSubmitButton();
       sendData(new FormData(evt.target))

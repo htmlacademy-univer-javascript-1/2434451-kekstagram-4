@@ -1,9 +1,9 @@
-import './getImages.js';
-import './showFullsize.js';
-import './showFileForm.js';
+import './get-images.js';
+import './big-image.js';
+import './file-form.js';
+import './image-effects.js';
+import './image-filters.js';
 import './validation.js';
-import './photoEffects.js';
 import './api.js';
-import './filters.js';
-import './getPhoto.js';
+
 

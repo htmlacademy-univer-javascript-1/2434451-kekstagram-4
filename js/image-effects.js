@@ -1,6 +1,6 @@
-import { preview } from './consts.js';
+import { preview } from './file-form.js';
 
-const sliderElement = document.querySelector('.effect-level__slider');
+const effectSlider = document.querySelector('.effect-level__slider');
 const effectsList = document.querySelectorAll('.effects__item');
 const sliderField = document.querySelector('.img-upload__effect-level');
 const effectValue = document.querySelector('.effect-value-to-form');
@@ -17,81 +17,73 @@ const effectsFormat = {
 };
 const sliderOptionEdit = {
   'sepia': () => {
-    sliderElement.noUiSlider.updateOptions({
+    effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0,
         max: 1,
       },
       step: 0.1,
       format: {
-        to: function (value) {
-          return value;
-        },
-        from: function (value) {
-          return parseFloat(value).toFixed(1);
-        },
+        to: (value) => value,
+        from: (value) => parseFloat(value).toFixed(1),
       },
     });
-    sliderElement.noUiSlider.set(1);
+    effectSlider.noUiSlider.set(1);
   },
   'none': () => {
     sliderField.classList.add('hidden');
-    sliderElement.noUiSlider.updateOptions({
+    effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0,
         max: 1,
       },
       step: 0.1,
     });
-    sliderElement.noUiSlider.set(1);
+    effectSlider.noUiSlider.set(1);
   },
   'chrome': () => {
-    sliderElement.noUiSlider.updateOptions({
+    effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0.5,
         max: 1,
       },
       step: 0.1,
       format: {
-        to: function (value) {
-          return value;
-        },
-        from: function (value) {
-          return parseFloat(value).toFixed(1);
-        },
+        to: (value) => value,
+        from: (value) => parseFloat(value).toFixed(1),
       },
     });
-    sliderElement.noUiSlider.set(1);
+    effectSlider.noUiSlider.set(1);
   },
   'marvin': () => {
-    sliderElement.noUiSlider.updateOptions({
+    effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0,
         max: 100,
       },
       step: 1,
     });
-    sliderElement.noUiSlider.set(100);
+    effectSlider.noUiSlider.set(100);
   },
   'phobos': () => {
-    sliderElement.noUiSlider.updateOptions({
+    effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0,
         max: 3,
       },
       step: 0.1,
     });
-    sliderElement.noUiSlider.set(3);
+    effectSlider.noUiSlider.set(3);
   },
   'heat': () => {
-    sliderElement.noUiSlider.updateOptions({
+    effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0,
         max: 3,
       },
       step: 0.1,
     });
-    sliderElement.noUiSlider.set(3);
+    effectSlider.noUiSlider.set(3);
   }
 };
 effectsList.forEach((element) => {
@@ -101,13 +93,13 @@ effectsList.forEach((element) => {
     selectedEffect = element.querySelector('input[name="effect"]:checked').value;
     sliderField.classList.remove('hidden');
     sliderOptionEdit[selectedEffect]();
-    preview.style.filter = effectsFormat[selectedEffect](sliderElement.noUiSlider.get());
+    preview.style.filter = effectsFormat[selectedEffect](effectSlider.noUiSlider.get());
     effectValue.value = preview.style.filter;
-    effectValueForm.value = sliderElement.noUiSlider.get();
+    effectValueForm.value = effectSlider.noUiSlider.get();
 
   });
 });
-noUiSlider.create(sliderElement, {
+noUiSlider.create(effectSlider, {
   range: {
     min: 0,
     max: 100,
@@ -116,9 +108,9 @@ noUiSlider.create(sliderElement, {
   step: 1,
   connect: 'lower',
 });
-sliderElement.noUiSlider.on('update', () => {
-  preview.style.filter = effectsFormat[selectedEffect](sliderElement.noUiSlider.get());
+effectSlider.noUiSlider.on('update', () => {
+  preview.style.filter = effectsFormat[selectedEffect](effectSlider.noUiSlider.get());
   effectValue.value = preview.style.filter;
-  effectValueForm.value = sliderElement.noUiSlider.get();
+  effectValueForm.value = effectSlider.noUiSlider.get();
 });
 sliderField.classList.add('hidden');
