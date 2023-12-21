@@ -12,8 +12,8 @@ const closeImage = (func) => {
   commentsList.innerHTML = '';
   bigPictureImage.classList.add('hidden');
   document.removeEventListener('keydown', func);
-  document.body.classList.remove('modal-open');
   document.querySelector('.comments-loader').removeEventListener('click', onLoadComments);
+  document.body.classList.remove('modal-open');
 };
 
 const onDocumentKeydown = (evt) => {
@@ -28,18 +28,18 @@ const openImage = (image, data) => {
   if (image.target.classList.contains('picture__img')){
     image.preventDefault();
     const commentLoader = bigPictureImage.querySelector('.comments-loader');
-    commentLoader.classList.remove('hidden');
-    bigPictureImage.classList.remove('hidden');
-    const commentsObj = renderComments(filterDefault(data), image, 0, commentLoader);
-    commentsObj();
+    const commentsObject = renderComments(filterDefault(data), image, 0, commentLoader);
+    commentsObject();
     onLoadComments = (evt) => {
       evt.preventDefault();
-      commentsObj();
+      commentsObject();
     };
     renderImage(image);
     commentLoader.addEventListener('click', onLoadComments);
     document.addEventListener('keydown', onDocumentKeydown);
     document.body.classList.add('modal-open');
+    commentLoader.classList.remove('hidden');
+    bigPictureImage.classList.remove('hidden');
   }
 };
 
