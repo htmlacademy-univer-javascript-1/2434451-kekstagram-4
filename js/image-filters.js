@@ -2,15 +2,7 @@ import { renderPhotosList } from './get-images.js';
 import { debounce } from './utils.js';
 import { FILTER_DELAY } from './consts.js';
 
-const countDefaultImages = 25;
-const countRandomImages = 10;
-const countDiscussedImages = 25;
 
-
-const filterRandom = (photos) => {
-  photos.sort(() => Math.random() - 0.5);
-  return photos;
-};
 const compareCommentLength = (a, b) => {
   if (a['comments'].length > b['comments'].length) {
     return 1;
@@ -27,6 +19,11 @@ const compareDefault = (a, b) => {
     return 1;
   }
   return 0;
+};
+
+const filterRandom = (photos) => {
+  photos.sort(() => Math.random() - 0.5);
+  return photos;
 };
 
 const filterDefault = (photos) => {
@@ -48,6 +45,9 @@ const filterPhotos = (evt, filter, photosCount, photos) => {
 };
 
 const setFilterListeners = (photos) => {
+  const countDefaultImages = 25;
+  const countRandomImages = 10;
+  const countDiscussedImages = 25;
   const filterDefaultButton = document.querySelector('#filter-default');
   const filterRandomButton = document.querySelector('#filter-random');
   const filterDiscussedButton = document.querySelector('#filter-discussed');
