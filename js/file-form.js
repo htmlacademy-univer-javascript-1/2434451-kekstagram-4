@@ -6,9 +6,11 @@ const closeForm = document.querySelector('.img-upload__cancel');
 const imageForm = document.querySelector('.img-upload__form');
 const previewImage = imageForm.querySelector('.img-upload__preview img');
 const effectsPreview = imageForm.querySelectorAll('.effects__preview');
-const scaleSmaller = imageForm.querySelector('.scale__control--smaller');
+
 const scaleBigger = imageForm.querySelector('.scale__control--bigger');
+const scaleSmaller = imageForm.querySelector('.scale__control--smaller');
 const scaleValue = imageForm.querySelector('.scale__control--value');
+
 const successMessageTemplate = document.querySelector('#success');
 const errorMessageTemplate = document.querySelector('#error');
 
@@ -17,15 +19,15 @@ const scaleImage = (value) => {
   previewImage.style.transform = `scale(${  Number(Number(value.slice(0, -1)) / 100)  })`;
 };
 
-const onScaleBiggerClick = (evt) => {
-  evt.preventDefault();
-  scaleValue.value = `${Math.min(Number(scaleValue.value.slice(0, -1)) + 25, 100)}%`;
-  scaleImage(scaleValue.value);
-};
-
 const onScaleSmallerClick = (evt) => {
   evt.preventDefault();
   scaleValue.value = `${Math.max(Number(scaleValue.value.slice(0, -1)) - 25, 25 )}%`;
+  scaleImage(scaleValue.value);
+};
+
+const onScaleBiggerClick = (evt) => {
+  evt.preventDefault();
+  scaleValue.value = `${Math.min(Number(scaleValue.value.slice(0, -1)) + 25, 100)}%`;
   scaleImage(scaleValue.value);
 };
 
@@ -34,10 +36,10 @@ const closeFileForm = (func=()=>(null)) => {
   || document.activeElement === imageForm.querySelector('.text__description'))) {
     uploadFile.value = '';
     overlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
     scaleBigger.removeEventListener('click', onScaleBiggerClick);
     scaleSmaller.removeEventListener('click', onScaleSmallerClick);
     document.removeEventListener('keydown', func);
+    document.body.classList.remove('modal-open');
     imageForm.reset();
   }
 };
