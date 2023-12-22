@@ -1,25 +1,25 @@
-import { preview } from './file-form.js';
+import { previewImage } from './file-form.js';
 
 const effectSlider = document.querySelector('.effect-level__slider');
-const effectsList = document.querySelectorAll('.effects__item');
 const sliderField = document.querySelector('.img-upload__effect-level');
 const effectValue = document.querySelector('.effect-value-to-form');
 const effectValueForm = document.querySelector('.effect-level__value');
+
 let selectedEffect = 'none';
 
 const effectsFormat = {
+  'chrome': (value) => `grayscale(${value})`,
   'sepia': (value) => `sepia(${value})`,
   'marvin': (value) => `invert(${value}%)`,
   'phobos': (value) => `blur(${value}px)`,
-  'none': () => 'none',
-  'chrome': (value) => `grayscale(${value})`,
-  'heat': (value) => `brightness(${value})`
+  'heat': (value) => `brightness(${value})`,
+  'none': () => 'none'
 };
 const sliderOptionEdit = {
-  'sepia': () => {
+  'chrome': () => {
     effectSlider.noUiSlider.updateOptions({
       range: {
-        min: 0,
+        min: 0.5,
         max: 1,
       },
       step: 0.1,
@@ -30,21 +30,10 @@ const sliderOptionEdit = {
     });
     effectSlider.noUiSlider.set(1);
   },
-  'none': () => {
-    sliderField.classList.add('hidden');
+  'sepia': () => {
     effectSlider.noUiSlider.updateOptions({
       range: {
         min: 0,
-        max: 1,
-      },
-      step: 0.1,
-    });
-    effectSlider.noUiSlider.set(1);
-  },
-  'chrome': () => {
-    effectSlider.noUiSlider.updateOptions({
-      range: {
-        min: 0.5,
         max: 1,
       },
       step: 0.1,
@@ -84,17 +73,28 @@ const sliderOptionEdit = {
       step: 0.1,
     });
     effectSlider.noUiSlider.set(3);
+  },
+  'none': () => {
+    sliderField.classList.add('hidden');
+    effectSlider.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+    });
+    effectSlider.noUiSlider.set(1);
   }
 };
-effectsList.forEach((element) => {
+document.querySelectorAll('.effects__item').forEach((element) => {
   element.addEventListener('change', (evt) => {
     evt.preventDefault();
-    preview.style.filter = 'none';
+    previewImage.style.filter = 'none';
     selectedEffect = element.querySelector('input[name="effect"]:checked').value;
     sliderField.classList.remove('hidden');
     sliderOptionEdit[selectedEffect]();
-    preview.style.filter = effectsFormat[selectedEffect](effectSlider.noUiSlider.get());
-    effectValue.value = preview.style.filter;
+    previewImage.style.filter = effectsFormat[selectedEffect](effectSlider.noUiSlider.get());
+    effectValue.value = previewImage.style.filter;
     effectValueForm.value = effectSlider.noUiSlider.get();
 
   });
@@ -109,8 +109,8 @@ noUiSlider.create(effectSlider, {
   connect: 'lower',
 });
 effectSlider.noUiSlider.on('update', () => {
-  preview.style.filter = effectsFormat[selectedEffect](effectSlider.noUiSlider.get());
-  effectValue.value = preview.style.filter;
+  previewImage.style.filter = effectsFormat[selectedEffect](effectSlider.noUiSlider.get());
+  effectValue.value = previewImage.style.filter;
   effectValueForm.value = effectSlider.noUiSlider.get();
 });
 sliderField.classList.add('hidden');
