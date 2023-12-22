@@ -75,10 +75,6 @@ closeForm.addEventListener('keydown', (evt) => {
   }
 });
 
-document.querySelector('.img-upload__input').addEventListener('change', (evt) => {
-  evt.preventDefault();
-  openFileForm();
-});
 
 const onDocumentKeydownSuccess = (evt) => {
   if (isEscapeKey(evt)) {
@@ -97,6 +93,12 @@ const onDocumentKeydownError = (evt) => {
   }
 };
 
+document.querySelector('.img-upload__input').addEventListener('change', (evt) => {
+  evt.preventDefault();
+  openFileForm();
+});
+
+
 const closeSentForm = () => {
   closeFileForm();
   const successMessage = successMessageTemplate.content.cloneNode(true);
@@ -113,9 +115,8 @@ const closeSentForm = () => {
 const closeSentFormError = (message) => {
   overlay.classList.add('hidden');
   const errorMessage = errorMessageTemplate.content.cloneNode(true);
-  const errorText = errorMessage.querySelector('.error__title');
-  errorText.textContent = `${message  }\n`;
   const errorButton = errorMessage.querySelector('.error__button');
+  errorMessage.querySelector('.error__title').textContent = `${message  }\n`;
   document.body.appendChild(errorMessage, true);
   errorButton.addEventListener('click', (evt) => {
     document.body.removeChild(document.body.querySelector('.error'));
