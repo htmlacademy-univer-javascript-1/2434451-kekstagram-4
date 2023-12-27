@@ -5,9 +5,9 @@ import { FILTER_DELAY } from './consts.js';
 
 const compareCommentLength = (a, b) => {
   if (a['comments'].length > b['comments'].length) {
-    return 1;
-  } else if (a['comments'].length < b['comments'].length) {
     return -1;
+  } else if (a['comments'].length < b['comments'].length) {
+    return 1;
   }
   return 0;
 };
