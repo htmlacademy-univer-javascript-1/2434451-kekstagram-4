@@ -24,8 +24,8 @@ const closeFileForm = (func=()=>(null)) => {
     scaleSmaller.removeEventListener('click', onScaleSmallerClick);
     document.removeEventListener('keydown', func);
     document.body.classList.remove('modal-open');
-    imageForm.reset();
     pristine.reset();
+    imageForm.reset();
     previewImage.style.filter = 'none';
     sliderField.classList.add('hidden');
   }
