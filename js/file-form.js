@@ -1,6 +1,5 @@
 import { pristine } from './validation.js';
 import { isEscapeKey, isEnterKey } from './consts.js';
-import { scaleBigger, scaleSmaller, onScaleBiggerClick, onScaleSmallerClick } from './slider.js';
 
 const sliderField = document.querySelector('.img-upload__effect-level');
 const overlay = document.querySelector('.img-upload__overlay');
