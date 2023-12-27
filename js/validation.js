@@ -5,7 +5,7 @@ import { REGEXP } from './consts.js';
 const imageForm = document.querySelector('.img-upload__form');
 const submitButton = imageForm.querySelector('.img-upload__submit');
 
-const pristine = new Pristine(imageForm, {
+export const pristine = new Pristine(imageForm, {
   classTo: 'form__item',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
@@ -15,7 +15,7 @@ const pristine = new Pristine(imageForm, {
 });
 
 
-function validateHashtags(value) {
+const validateHashtags = (value) => {
   value = value.toLowerCase();
   if (value.length === 0) {
     return true;
@@ -36,9 +36,9 @@ function validateHashtags(value) {
     return false;
   }
   return flag;
-}
+};
 
-function dropError(){
+const dropError = () => {
   const hashtags = imageForm.querySelector('.text__hashtags');
   const hashtagsArr = hashtags.value.split(' ');
   if (hashtagsArr.length > 5){
@@ -56,7 +56,7 @@ function dropError(){
     repeatHashtags.push(element);
   });
   return message;
-}
+};
 
 const validateComment = (value) => value.length <= 140;
 
