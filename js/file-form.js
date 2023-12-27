@@ -1,7 +1,8 @@
+import { pristine } from './validation.js';
 import { isEscapeKey, isEnterKey } from './consts.js';
-import { scaleBigger, scaleSmaller, onScaleBiggerClick, onScaleSmallerClick } from './slider.js';
+import {scaleBigger, scaleSmaller, onScaleBiggerClick, onScaleSmallerClick} from './slider.js';
 
-
+const sliderField = document.querySelector('.img-upload__effect-level');
 const overlay = document.querySelector('.img-upload__overlay');
 const uploadFile = document.querySelector('#upload-file');
 const closeForm = document.querySelector('.img-upload__cancel');
@@ -23,7 +24,10 @@ const closeFileForm = (func=()=>(null)) => {
     scaleSmaller.removeEventListener('click', onScaleSmallerClick);
     document.removeEventListener('keydown', func);
     document.body.classList.remove('modal-open');
+    pristine.reset();
     imageForm.reset();
+    previewImage.style.filter = 'none';
+    sliderField.classList.add('hidden');
   }
 };
 
